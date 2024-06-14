@@ -1,92 +1,85 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>AR Team Member Info</title>
-    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar.js"></script>
-    <script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
-    <style>
-      body {
-        margin: 0;
-        overflow: hidden;
-      }
-      #info {
-        position: absolute;
-        top: 10px;
-        left: 10px;
-        background-color: white;
-        padding: 10px;
-        border-radius: 5px;
-      }
-      #info img {
-        width: 100px;
-        height: 100px;
-        border-radius: 50%;
-      }
-      #reader {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-      }
-      a-scene {
-        display: none;
-      }
-    </style>
-  </head>
-  <body>
-    <div id="reader"></div>
-    <div id="info" style="display: none;">
-      <h2 id="name"></h2>
-      <img id="image" src="" alt="Member Image" />
-    </div>
-    <a-scene embedded arjs>
-      <a-marker preset="hiro">
-        <a-box position="0 0.5 0" material="color: yellow;"></a-box>
-      </a-marker>
-      <a-entity camera></a-entity>
-    </a-scene>
+<head>
+  <title>AR Team Member Info</title>
+  <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar.js"></script>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+    }
+    #info {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background-color: white;
+      padding: 10px;
+      border-radius: 5px;
+    }
+    #info img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+    }
+  </style>
+</head>
+<body>
+  <div id="info" style="display: none;">
+    <h2 id="name"></h2>
+    <img id="image" src="" alt="Member Image" />
+  </div>
 
-    <script>
-      const members = {
-        "1": {
-          name: "Alice",
-          image: "images/alice.jpg"
-        },
-        "2": {
-          name: "Bob",
-          image: "images/bob.jpg"
-        }
-        // Add other members here
-      };
+  <a-scene embedded arjs>
+    <a-marker preset="hiro">
+      <a-box position="0 0.5 0" material="color: yellow;"></a-box>
+      <a-entity id="member-info" position="0 0.5 -1">
+        <a-plane id="member-image" src="" height="1" width="1" position="0 1 0"></a-plane>
+        <a-text id="member-name" value="" position="0 0.5 0" align="center"></a-text>
+      </a-entity>
+    </a-marker>
+    <a-sky id="sky" src="" visible="false"></a-sky>
+    <a-entity camera></a-entity>
+  </a-scene>
 
-      const infoDiv = document.getElementById('info');
-      const nameElement = document.getElementById('name');
-      const imageElement = document.getElementById('image');
-      const scene = document.querySelector('a-scene');
+  <script>
+    const members = {
+      "hiro": {
+        name: "Alice",
+        image: "images/alice.jpg",
+        sky: "images/360-image.jpg"  // 360 image URL
+      },
+      // Add other members here
+    };
 
-      function displayMemberInfo(id) {
-        const member = members[id];
+    const nameElement = document.getElementById('name');
+    const imageElement = document.getElementById('image');
+    const memberImage = document.getElementById('member-image');
+    const memberName = document.getElementById('member-name');
+    const sky = document.getElementById('sky');
 
-        if (member) {
-          nameElement.textContent = member.name;
-          imageElement.src = member.image;
-          infoDiv.style.display = 'block';
-          scene.style.display = 'block';
-        } else {
-          alert('Member not found');
-        }
+    document.querySelector('a-marker').addEventListener('markerFound', (event) => {
+      const markerId = event.target.getAttribute('preset');
+      const member = members[markerId];
+
+      if (member) {
+        nameElement.textContent = member.name;
+        imageElement.src = member.image;
+        document.getElementById('info').style.display = 'block';
+
+        memberName.setAttribute('value', member.name);
+        memberImage.setAttribute('src', member.image);
+        sky.setAttribute('src', member.sky);
+        sky.setAttribute('visible', 'true');
       }
+    });
 
-      function onScanSuccess(decodedText, decodedResult) {
-        console.log(`Code matched = ${decodedText}`, decodedResult);
-        displayMemberInfo(decodedText);
-        html5QrcodeScanner.clear();
-        document.getElementById('reader').style.display = 'none';
-      }
-
-      const html5QrcodeScanner = new Html5QrcodeScanner(
-        "reader", { fps: 10, qrbox: 250 });
-      html5QrcodeScanner.render(onScanSuccess);
-    </script>
-  </body>
+    document.querySelector('a-marker').addEventListener('markerLost', () => {
+      document.getElementById('info').style.display = 'none';
+      memberName.setAttribute('value', '');
+      memberImage.setAttribute('src', '');
+      sky.setAttribute('visible', 'false');
+    });
+  </script>
+</body>
 </html>
