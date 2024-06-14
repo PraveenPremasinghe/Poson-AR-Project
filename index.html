@@ -46,20 +46,17 @@
     <script>
         // Function to start AR experience
         function startAR() {
-            var arMarker = document.createElement('a-marker');
-            arMarker.setAttribute('type', 'pattern');
-            arMarker.setAttribute('url', 'https://upload.wikimedia.org/wikipedia/commons/4/48/Hiro_marker_ARjs.png?20171212180525'); // URL to your Hiro marker pattern file
-            document.querySelector('a-scene').appendChild(arMarker);
+            var scene = document.querySelector('a-scene');
 
+            // Create an entity to hold the HTML content
             var htmlEntity = document.createElement('a-entity');
             htmlEntity.setAttribute('position', '0 0 0');
-            htmlEntity.innerHTML = '<a-entity position="0 0 0"><a-entity html2canvas="width: 409.6; height: 409.6; distance: 0.5; text: <h1>my name is praveen</h1>;"></a-entity></a-entity>';
-            arMarker.appendChild(htmlEntity);
+            htmlEntity.innerHTML = '<a-entity position="0 0 0" text="value: my name is praveen; width: 4; align: center; color: white;"></a-entity>';
+            scene.appendChild(htmlEntity);
         }
 
         // Initialize AR scene
         document.addEventListener('DOMContentLoaded', function () {
-            var scene = document.querySelector('a-scene');
             var video = document.getElementById('video');
             var constraints = { video: { facingMode: "environment" } };
 
