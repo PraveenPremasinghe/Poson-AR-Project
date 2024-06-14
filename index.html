@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>AR Team Member Info</title>
+  <title>AR to VR Experience</title>
   <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
   <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar.js"></script>
   <style>
@@ -9,79 +9,47 @@
       margin: 0;
       overflow: hidden;
     }
-    #info {
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      background-color: white;
-      padding: 10px;
-      border-radius: 5px;
-    }
-    #info img {
-      width: 100px;
-      height: 100px;
-      border-radius: 50%;
-    }
   </style>
 </head>
 <body>
-  <div id="info" style="display: none;">
-    <h2 id="name"></h2>
-    <img id="image" src="" alt="Member Image" />
-  </div>
-
   <a-scene embedded arjs>
+    <!-- Marker -->
     <a-marker preset="hiro" id="marker">
-      <a-box id="box" position="0 0.5 0" material="color: yellow;"></a-box>
-    </a-marker>
-    <a-entity id="world" visible="false">
+      <!-- 3D content to display on marker detection -->
       <a-box position="0 0.5 0" material="color: yellow;"></a-box>
-      <a-plane id="member-image" src="" height="1" width="1" position="0 1 0"></a-plane>
-      <a-text id="member-name" value="" position="0 0.5 0" align="center"></a-text>
-      <a-sky id="sky" src=""></a-sky>
-    </a-entity>
+    </a-marker>
     <a-entity camera></a-entity>
   </a-scene>
 
-  <script>
-    const members = {
-      "hiro": {
-        name: "Alice",
-        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQnTpe8jPFe7D5DGYevyfAcU9fUG4Fz_IXfqQ&s",
-        sky: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQnA3i_r2m-WFOcFcyl9asD4lBLgoiSio5niw&s"  // 360 image URL
-      },
-      // Add other members here
-    };
+  <!-- VR Scene (hidden initially) -->
+  <a-scene id="vr-scene" embedded vr-mode-ui="enabled: true" style="display: none;">
+    <a-sky color="#ECECEC"></a-sky>
+    <a-box position="0 0.5 -3" rotation="0 45 0" color="#4CC3D9"></a-box>
+    <a-sphere position="1.25 1.25 -5" radius="1.25" color="#EF2D5E"></a-sphere>
+    <a-cylinder position="0.75 0.75 -2" radius="0.5" height="1.5" color="#FFC65D"></a-cylinder>
+    <a-plane position="0 0 -4" rotation="-90 0 0" width="4" height="4" color="#7BC8A4"></a-plane>
+    <a-entity camera>
+      <a-entity cursor="fuse: true; fuseTimeout: 500"
+                position="0 0 -1"
+                geometry="primitive: ring; radiusInner: 0.02; radiusOuter: 0.03"
+                material="color: black; shader: flat">
+      </a-entity>
+    </a-entity>
+  </a-scene>
 
+  <script>
     const marker = document.getElementById('marker');
-    const world = document.getElementById('world');
-    const nameElement = document.getElementById('name');
-    const imageElement = document.getElementById('image');
-    const memberImage = document.getElementById('member-image');
-    const memberName = document.getElementById('member-name');
-    const sky = document.getElementById('sky');
+    const vrScene = document.getElementById('vr-scene');
+    const arScene = document.querySelector('a-scene');
 
     marker.addEventListener('markerFound', (event) => {
-      const markerId = event.target.getAttribute('preset');
-      const member = members[markerId];
-
-      if (member) {
-        nameElement.textContent = member.name;
-        imageElement.src = member.image;
-        document.getElementById('info').style.display = 'block';
-
-        memberName.setAttribute('value', member.name);
-        memberImage.setAttribute('src', member.image);
-        sky.setAttribute('src', member.sky);
-
-        world.setAttribute('visible', 'true');
-        marker.setAttribute('visible', 'false');
-      }
+      // Hide AR scene and show VR scene
+      arScene.style.display = 'none';
+      vrScene.style.display = 'block';
     });
 
-    marker.addEventListener('markerLost', () => {
-      // Optionally, hide the world content if you want
-      // world.setAttribute('visible', 'false');
+    marker.addEventListener('markerLost', (event) => {
+      // Optionally, handle marker lost event
     });
   </script>
 </body>
