@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>AR Team Member Info</title>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar.js"></script>
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+      }
+      #info {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        background-color: white;
+        padding: 10px;
+        border-radius: 5px;
+      }
+      #info img {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="info" style="display: none;">
+      <h2 id="name"></h2>
+      <img id="image" src="" alt="Member Image" />
+    </div>
+    <a-scene embedded arjs>
+      <a-marker preset="hiro">
+        <a-box position="0 0.5 0" material="color: yellow;"></a-box>
+      </a-marker>
+      <a-entity camera></a-entity>
+    </a-scene>
+
+    <script>
+      // Placeholder for fetching member information based on marker id
+      const members = {
+        "hiro": {
+          name: "Alice",
+          image: "images/alice.jpg"
+        },
+        // Add other members here
+      };
+
+      const infoDiv = document.getElementById('info');
+      const nameElement = document.getElementById('name');
+      const imageElement = document.getElementById('image');
+
+      document.querySelector('a-marker').addEventListener('markerFound', (event) => {
+        const markerId = event.target.getAttribute('preset');
+        const member = members[markerId];
+
+        if (member) {
+          nameElement.textContent = member.name;
+          imageElement.src = member.image;
+          infoDiv.style.display = 'block';
+        }
+      });
+
+      document.querySelector('a-marker').addEventListener('markerLost', () => {
+        infoDiv.style.display = 'none';
+      });
+    </script>
+  </body>
+</html>
