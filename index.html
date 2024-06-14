@@ -1,51 +1,19 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AR Image Showcase</title>
-    <style>
-        body {
-            margin: 0;
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #f0f0f0;
-        }
-
-        #ar-container {
-            width: 80vw;
-            height: 80vh;
-            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
-        }
-    </style>
+  <title>AR Project with HTML Page</title>
+  <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+  <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
 </head>
-<body>
-    <div id="ar-container">
-        <a-scene embedded arjs="sourceType: webcam;">
-            <a-marker preset="hiro" id="hiroMarker">
-                <!-- Placeholder for image -->
-            </a-marker>
-            <a-entity camera></a-entity>
-        </a-scene>
-    </div>
-
-    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
-    <script src="https://cdn.rawgit.com/jeromeetienne/AR.js/2.2.0/aframe/build/aframe-ar.js"></script>
-    <script>
-        // JavaScript to handle AR interactions
-        document.querySelector('a-marker').addEventListener('markerFound', function() {
-            var marker = this; // Get the marker element
-
-            // Create and append the image element
-            var image = document.createElement('a-image');
-            image.setAttribute('src', 'https://via.placeholder.com/150'); // Placeholder image URL
-            image.setAttribute('width', '1');
-            image.setAttribute('height', '1');
-            marker.appendChild(image);
-        });
-    </script>
+<body style="margin: 0; overflow: hidden;">
+  <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false;">
+    <a-marker preset="hiro">
+      <!-- Content to display when marker is detected -->
+      <a-entity position="0 0 0">
+        <iframe src="content.html" width="640" height="480"></iframe>
+      </a-entity>
+    </a-marker>
+    <a-entity camera></a-entity>
+  </a-scene>
 </body>
 </html>
