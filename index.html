@@ -31,14 +31,15 @@
   </div>
 
   <a-scene embedded arjs>
-    <a-marker preset="hiro">
-      <a-box position="0 0.5 0" material="color: yellow;"></a-box>
-      <a-entity id="member-info" position="0 0.5 -1">
-        <a-plane id="member-image" src="" height="1" width="1" position="0 1 0"></a-plane>
-        <a-text id="member-name" value="" position="0 0.5 0" align="center"></a-text>
-      </a-entity>
+    <a-marker preset="hiro" id="marker">
+      <a-box id="box" position="0 0.5 0" material="color: yellow;"></a-box>
     </a-marker>
-    <a-sky id="sky" src="" visible="false"></a-sky>
+    <a-entity id="world" visible="false">
+      <a-box position="0 0.5 0" material="color: yellow;"></a-box>
+      <a-plane id="member-image" src="" height="1" width="1" position="0 1 0"></a-plane>
+      <a-text id="member-name" value="" position="0 0.5 0" align="center"></a-text>
+      <a-sky id="sky" src=""></a-sky>
+    </a-entity>
     <a-entity camera></a-entity>
   </a-scene>
 
@@ -52,13 +53,15 @@
       // Add other members here
     };
 
+    const marker = document.getElementById('marker');
+    const world = document.getElementById('world');
     const nameElement = document.getElementById('name');
     const imageElement = document.getElementById('image');
     const memberImage = document.getElementById('member-image');
     const memberName = document.getElementById('member-name');
     const sky = document.getElementById('sky');
 
-    document.querySelector('a-marker').addEventListener('markerFound', (event) => {
+    marker.addEventListener('markerFound', (event) => {
       const markerId = event.target.getAttribute('preset');
       const member = members[markerId];
 
@@ -70,15 +73,15 @@
         memberName.setAttribute('value', member.name);
         memberImage.setAttribute('src', member.image);
         sky.setAttribute('src', member.sky);
-        sky.setAttribute('visible', 'true');
+
+        world.setAttribute('visible', 'true');
+        marker.setAttribute('visible', 'false');
       }
     });
 
-    document.querySelector('a-marker').addEventListener('markerLost', () => {
-      document.getElementById('info').style.display = 'none';
-      memberName.setAttribute('value', '');
-      memberImage.setAttribute('src', '');
-      sky.setAttribute('visible', 'false');
+    marker.addEventListener('markerLost', () => {
+      // Optionally, hide the world content if you want
+      // world.setAttribute('visible', 'false');
     });
   </script>
 </body>
