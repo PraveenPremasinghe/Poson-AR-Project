@@ -4,6 +4,7 @@
     <title>AR Team Member Info</title>
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar.js"></script>
+    <script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
     <style>
       body {
         margin: 0;
@@ -22,9 +23,14 @@
         height: 100px;
         border-radius: 50%;
       }
+      #reader {
+        width: 100%;
+        height: 100%;
+      }
     </style>
   </head>
   <body>
+    <div id="reader"></div>
     <div id="info" style="display: none;">
       <h2 id="name"></h2>
       <img id="image" src="" alt="Member Image" />
@@ -39,10 +45,14 @@
     <script>
       // Placeholder for fetching member information based on marker id
       const members = {
-        "hiro": {
+        "1": {
           name: "Alice",
           image: "images/alice.jpg"
         },
+        "2": {
+          name: "Bob",
+          image: "images/bob.jpg"
+        }
         // Add other members here
       };
 
@@ -50,20 +60,31 @@
       const nameElement = document.getElementById('name');
       const imageElement = document.getElementById('image');
 
-      document.querySelector('a-marker').addEventListener('markerFound', (event) => {
-        const markerId = event.target.getAttribute('preset');
-        const member = members[markerId];
+      function displayMemberInfo(id) {
+        const member = members[id];
 
         if (member) {
           nameElement.textContent = member.name;
           imageElement.src = member.image;
           infoDiv.style.display = 'block';
+        } else {
+          alert('Member not found');
         }
-      });
+      }
 
-      document.querySelector('a-marker').addEventListener('markerLost', () => {
-        infoDiv.style.display = 'none';
-      });
+      function onScanSuccess(decodedText, decodedResult) {
+        // Handle the result here
+        console.log(`Code matched = ${decodedText}`, decodedResult);
+        // Assuming the decodedText is the member ID
+        displayMemberInfo(decodedText);
+
+        // Stop scanning once a QR code is found
+        html5QrcodeScanner.clear();
+      }
+
+      const html5QrcodeScanner = new Html5QrcodeScanner(
+        "reader", { fps: 10, qrbox: 250 });
+      html5QrcodeScanner.render(onScanSuccess);
     </script>
   </body>
 </html>
