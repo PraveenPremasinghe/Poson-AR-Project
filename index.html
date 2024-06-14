@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AR Member Display</title>
+  <title>AR Group Member Display</title>
   <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
   <script src="https://cdn.rawgit.com/jeromeetienne/AR.js/2.2.1/aframe/build/aframe-ar.js"></script>
 </head>
@@ -11,16 +11,45 @@
   <a-scene embedded arjs="debugUIEnabled:false; sourceType: webcam; trackingMethod: best;">
     <!-- Define your Hiro marker -->
     <a-marker preset="hiro">
-      <!-- Define your member display UI -->
+      <!-- Member display UI -->
       <a-entity position="0 0.5 0">
-        <a-box position="0 0.25 0" width="1" height="0.5" depth="0.01" color="gray"></a-box>
-        <a-entity position="0 0.5 0" text="value: Member Name; color: white; align: center;"></a-entity>
-        <a-entity position="0 0 0">
-          <a-image src="data:image/jpeg;base64,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" width="0.8" height="0.8"></a-image>
+        <a-box position="0 0.25 0" width="1.5" height="1" depth="0.01" color="gray"></a-box>
+        <a-entity position="0 0.65 0">
+          <a-image id="memberImage" src="" width="1" height="1"></a-image>
         </a-entity>
+        <a-entity position="0 0.1 0" text="value: Member Name; color: white; align: center;"></a-entity>
       </a-entity>
     </a-marker>
     <a-entity camera></a-entity>
   </a-scene>
+
+  <script>
+    // Example data with free boy images
+    const members = [
+      { name: "John Doe", image: "https://via.placeholder.com/150?text=John" },
+      { name: "Jane Smith", image: "https://via.placeholder.com/150?text=Jane" },
+      { name: "Michael Brown", image: "https://via.placeholder.com/150?text=Michael" },
+      // Add more members as needed
+    ];
+
+    let currentMemberIndex = 0;
+
+    // Function to update member information
+    function updateMemberInfo(marker) {
+      const member = members[currentMemberIndex];
+
+      // Update image source and member name
+      document.getElementById('memberImage').setAttribute('src', member.image);
+      document.querySelector('[text]').setAttribute('value', member.name);
+
+      // Move to the next member
+      currentMemberIndex = (currentMemberIndex + 1) % members.length;
+    }
+
+    // Event listener for markerFound event
+    document.querySelector('a-marker').addEventListener('markerFound', function(ev) {
+      updateMemberInfo(ev.target.object3DMap.el);
+    });
+  </script>
 </body>
 </html>
