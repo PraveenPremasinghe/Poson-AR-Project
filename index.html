@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AR Group Member Display</title>
+  <title>AR HTML Content Display</title>
   <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
   <script src="https://cdn.rawgit.com/jeromeetienne/AR.js/2.2.1/aframe/build/aframe-ar.js"></script>
 </head>
@@ -11,44 +11,37 @@
   <a-scene embedded arjs="debugUIEnabled:false; sourceType: webcam; trackingMethod: best;">
     <!-- Define your Hiro marker -->
     <a-marker preset="hiro">
-      <!-- Member display UI -->
+      <!-- HTML content display -->
       <a-entity position="0 0.5 0">
-        <a-box position="0 0.25 0" width="1.5" height="1" depth="0.01" color="gray"></a-box>
-        <a-entity position="0 0.65 0">
-          <a-image id="memberImage" src="" width="1" height="1"></a-image>
+        <a-box position="0 0.25 0" width="2" height="1.5" depth="0.01" color="gray"></a-box>
+        <a-entity position="0 0.75 0" scale="0.5 0.5 0.5">
+          <a-html id="htmlContent" content="" width="500" height="300"></a-html>
         </a-entity>
-        <a-entity position="0 0.1 0" text="value: Member Name; color: white; align: center;"></a-entity>
       </a-entity>
     </a-marker>
     <a-entity camera></a-entity>
   </a-scene>
 
   <script>
-    // Example data with free boy images
-    const members = [
-      { name: "John Doe", image: "https://via.placeholder.com/150?text=John" },
-      { name: "Jane Smith", image: "https://via.placeholder.com/150?text=Jane" },
-      { name: "Michael Brown", image: "https://via.placeholder.com/150?text=Michael" },
-      // Add more members as needed
-    ];
+    // Example data with HTML content
+    const memberHTML = `
+      <div style="text-align: center;">
+        <h1>John Doe</h1>
+        <img src="https://via.placeholder.com/150?text=John" alt="John's Image" style="width: 150px; height: 150px; border-radius: 50%;">
+        <p>Age: 25</p>
+        <p>Occupation: Developer</p>
+        <p>Interests: AR, Gaming</p>
+      </div>
+    `;
 
-    let currentMemberIndex = 0;
-
-    // Function to update member information
-    function updateMemberInfo(marker) {
-      const member = members[currentMemberIndex];
-
-      // Update image source and member name
-      document.getElementById('memberImage').setAttribute('src', member.image);
-      document.querySelector('[text]').setAttribute('value', member.name);
-
-      // Move to the next member
-      currentMemberIndex = (currentMemberIndex + 1) % members.length;
+    // Function to update HTML content
+    function updateHTMLContent(marker) {
+      document.getElementById('htmlContent').setAttribute('content', memberHTML);
     }
 
     // Event listener for markerFound event
     document.querySelector('a-marker').addEventListener('markerFound', function(ev) {
-      updateMemberInfo(ev.target.object3DMap.el);
+      updateHTMLContent(ev.target.object3DMap.el);
     });
   </script>
 </body>
