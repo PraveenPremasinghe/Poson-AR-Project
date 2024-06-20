@@ -1,51 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AR Members</title>
-  <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
-  <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
-  <style>
-    body {
-      margin: 0;
-      overflow: hidden;
-    }
-
-    .a-image {
-      border: 2px solid #ccc;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-
-    .a-text {
-      font-family: Arial, sans-serif;
-      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Location-based AR</title>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+    <style>
+        #ar-scene {
+            height: 100vh;
+        }
+    </style>
 </head>
 <body>
-  <a-scene embedded arjs>
-    <a-marker preset="hiro">
+    <a-scene id="ar-scene" embedded arjs>
+        <!-- AR content placed here -->
+        <a-entity id="ar-content">
+            <!-- Example: AR content anchored to a geolocation -->
+            <a-entity id="ar-marker" gps-entity-place="latitude: 47.6062; longitude: -122.3321;">
+                <!-- Replace with your AR content (e.g., 3D models, images, text) -->
+                <a-box color="blue" position="0 0.5 0" scale="0.5 0.5 0.5"></a-box>
+                <a-text value="AR Marker" position="0 1 0" scale="1.5 1.5 1.5"></a-text>
+            </a-entity>
+        </a-entity>
 
-      <a-entity position="-0.7 0.2 0" rotation="0 -45 0">
-        <a-image src="https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=600" height="0.25" width="0.25"></a-image>
-        <a-text value="Praveen" position="0 -0.05 0" color="#FFFFFF" scale="0.5 0.5"></a-text>
-      </a-entity>
+        <a-entity camera></a-entity>
+    </a-scene>
 
-      <a-entity position="-0.4 0.2 0" rotation="0 -45 0">
-        <a-image src="https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=600" height="0.25" width="0.25"></a-image>
-        <a-text value="Member 2 Name" position="0 -0.05 0" color="#FFFFFF" scale="0.5 0.5"></a-text>
-      </a-entity>
+    <script>
+        // Wait for scene to load
+        document.querySelector('a-scene').addEventListener('loaded', () => {
+            // Access geolocation
+            if ('geolocation' in navigator) {
+                navigator.geolocation.getCurrentPosition(position => {
+                    const userLatitude = position.coords.latitude;
+                    const userLongitude = position.coords.longitude;
 
-      <a-entity position="0 0.2 0" rotation="0 -45 0">
-        <a-image src="https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=600" height="0.25" width="0.25"></a-image>
-        <a-text value="Member 3 Name" position="0 -0.05 0" color="#FFFFFF" scale="0.5 0.5"></a-text>
-      </a-entity>
+                    // Calculate distance and orientation to AR marker (example)
+                    const arLatitude = 47.6062;  // Example latitude
+                    const arLongitude = -122.3321;  // Example longitude
 
-      <a-entity position="0.4 0.2 0" rotation="0 -45 0">
-        <a-image src="https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=600" height="0.25" width="0.25"></a-image>
-        <a-text value="Member 4 Name" position="0 -0.05 0" color="#FFFFFF" scale="0.5 0.5"></a-text>
-      </a-entity>
+                    const distance = calculateDistance(userLatitude, userLongitude, arLatitude, arLongitude);
+                    const bearing = calculateBearing(userLatitude, userLongitude, arLatitude, arLongitude);
 
-      <a-entity position="0.7 0.2 0" rotation="0 -45 0">
-        <a-image src="https://images.pexels.com/photos/2379004/pexels-photo
+                    // Update AR content position based on distance and bearing
+                    const arMarker = document.querySelector('#ar-marker');
+                    arMarker.setAttribute('gps-entity-place', `latitude: ${arLatitude}; longitude: ${arLongitude};`);
+                    arMarker.setAttribute('position', `${distance * Math.sin(bearing)} 0 ${-distance * Math.cos(bearing)}`);
+                });
+            } else {
+                console.error('Geolocation is not supported by this browser.');
+            }
+        });
+
+        // Function to calculate distance between two coordinates (Haversine formula)
+        function calculateDistance(lat1, lon1, lat2, lon2) {
+            const R = 6371; // Radius of the Earth in km
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLon = (lon2 - lon1) * Math.PI / 180;
+            const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                      Math.sin(dLon / 2) * Math.sin(dLon / 2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            const d = R * c; // Distance in km
+            return d * 1000; // Convert to meters
+        }
+
+        // Function to calculate bearing between two coordinates
+        function calculateBearing(lat1, lon1, lat2, lon2) {
+            const dLon = (lon2 - lon1) * Math.PI / 180;
+            const y = Math.sin(dLon) * Math.cos(lat2 * Math.PI / 180);
+            const x = Math.cos(lat1 * Math.PI / 180) * Math.sin(lat2 * Math.PI / 180) -
+                      Math.sin(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.cos(dLon);
+            const bearing = Math.atan2(y, x);
+            return bearing;
+        }
+    </script>
+</body>
+</html>
