@@ -31,23 +31,27 @@
     <a-scene embedded arjs>
         <!-- Hiro Marker -->
         <a-marker preset="hiro" id="hiro-marker">
-          <a-marker preset="hiro" id="hiro-marker">
             <a-entity id="member-group">
+                <!-- Initially hidden, show one by one -->
                 <a-entity id="member-gamika" class="hidden">
-                    <a-image src="https://via.placeholder.com/600?text=Gamika" position="-1 0 -1" rotation="-90 0 0" height="2" width="2"></a-image>
-                    <a-text value="Gamika" position="-1.2 0 -1.1" rotation="-90 0 0" scale="0.6 0.6 0.6" width="3" color="#FFFFFF"></a-text>
+                    <a-image src="https://via.placeholder.com/600?text=Gamika" camera look-controls position="0 1.6 0  rotation="-90 0 0" height="2" width="2"></a-image>
+                    <a-text value="Gamika" position="-0.9 0 -1.1" rotation="-90 0 0" scale="0.6 0.6 0.6" width="3" color="#FFFFFF"></a-text>
                 </a-entity>
                 <a-entity id="member-praveen" class="hidden">
-                    <a-image src="https://via.placeholder.com/600?text=Praveen" position="0 0 -1" rotation="-90 0 0" height="2" width="2"></a-image>
-                    <a-text value="Praveen" position="-0.2 0 -1.1" rotation="-90 0 0" scale="0.6 0.6 0.6" width="3" color="#FFFFFF"></a-text>
+                    <a-image src="https://via.placeholder.com/600?text=Praveen" position="-0.7 0 0" rotation="-90 0 0" height="2" width="2"></a-image>
+                    <a-text value="Praveen" position="-0.9 0 -1.1" rotation="-90 0 0" scale="0.6 0.6 0.6" width="3" color="#FFFFFF"></a-text>
                 </a-entity>
                 <a-entity id="member-rajaka" class="hidden">
-                    <a-image src="https://via.placeholder.com/600?text=Rajaka" position="1 0 -1" rotation="-90 0 0" height="2" width="2"></a-image>
-                    <a-text value="Rajaka" position="0.8 0 -1.1" rotation="-90 0 0" scale="0.6 0.6 0.6" width="3" color="#FFFFFF"></a-text>
+                    <a-image src="https://via.placeholder.com/600?text=Rajaka" position="-0.7 0 0" rotation="-90 0 0" height="2" width="2"></a-image>
+                    <a-text value="Rajaka" position="-0.9 0 -1.1" rotation="-90 0 0" scale="0.6 0.6 0.6" width="3" color="#FFFFFF"></a-text>
                 </a-entity>
+
+                <a-entity id="rig" position="25 10 0">
+                  <a-entity id="camera" camera look-controls></a-entity>
+                </a-entity>
+                
             </a-entity>
         </a-marker>
-        
 
         <a-entity camera></a-entity>
     </a-scene>
