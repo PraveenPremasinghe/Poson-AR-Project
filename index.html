@@ -35,17 +35,6 @@
     </a-entity>
   </a-scene>
   
-  <script>
-    const marker = document.querySelector('a-marker');
-    const memberContainer = document.getElementById('memberContainer');
-
-    marker.addEventListener('markerFound', () => {
-      memberContainer.setAttribute('visible', true);
-    });
-
-    marker.addEventListener('markerLost', () => {
-      memberContainer.setAttribute('visible', false);
-    });
-  </script>
+ 
 </body>
 </html>
