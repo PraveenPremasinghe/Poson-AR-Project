@@ -13,40 +13,74 @@
         }
 
         .a-image {
-        border: 2px solid #ccc;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
+            border: 2px solid #ccc;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
 
-    .a-text {
-        font-family: Arial, sans-serif;
-        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-    }
+        .a-text {
+            font-family: Arial, sans-serif;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
 
+        .hidden {
+            display: none;
+        }
     </style>
 </head>
 <body>
     <a-scene embedded arjs>
-        <a-marker preset="hiro">
-           
-
-            <a-image src="https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=600" position="-0.7 0 0" rotation="-90 0 0" height="2" width="2"></a-image>
-            <a-text value="Praveen" position="-0.9 0 -1.1" rotation="-90 0 0" scale="0.6 0.6 0.6" width="3" color="#FFFFFF"></a-text>
-
-            <a-image src="https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=600" position="-0.7 0 0" rotation="-90 0 0" height="2" width="2"></a-image>
-            <a-text value="Praveen" position="-0.9 0 -1.1" rotation="-90 0 0" scale="0.6 0.6 0.6" width="3" color="#FFFFFF"></a-text>
-
-            <a-image src="https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=600" position="-0.7 0 0" rotation="-90 0 0" height="2" width="2"></a-image>
-            <a-text value="Praveen" position="-0.9 0 -1.1" rotation="-90 0 0" scale="0.6 0.6 0.6" width="3" color="#FFFFFF"></a-text>
-
-            <a-image src="https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=600" position="-0.7 0 0" rotation="-90 0 0" height="2" width="2"></a-image>
-            <a-text value="Praveen" position="-0.9 0 -1.1" rotation="-90 0 0" scale="0.6 0.6 0.6" width="3" color="#FFFFFF"></a-text>
-
-            
-
-
-
+        <!-- Hiro Marker -->
+        <a-marker preset="hiro" id="hiro-marker">
+            <a-entity id="member-group">
+                <!-- Initially hidden, show one by one -->
+                <a-entity id="member-gamika" class="hidden">
+                    <a-image src="https://via.placeholder.com/600?text=Gamika" position="-0.7 0 0" rotation="-90 0 0" height="2" width="2"></a-image>
+                    <a-text value="Gamika" position="-0.9 0 -1.1" rotation="-90 0 0" scale="0.6 0.6 0.6" width="3" color="#FFFFFF"></a-text>
+                </a-entity>
+                <a-entity id="member-praveen" class="hidden">
+                    <a-image src="https://via.placeholder.com/600?text=Praveen" position="-0.7 0 0" rotation="-90 0 0" height="2" width="2"></a-image>
+                    <a-text value="Praveen" position="-0.9 0 -1.1" rotation="-90 0 0" scale="0.6 0.6 0.6" width="3" color="#FFFFFF"></a-text>
+                </a-entity>
+                <a-entity id="member-rajaka" class="hidden">
+                    <a-image src="https://via.placeholder.com/600?text=Rajaka" position="-0.7 0 0" rotation="-90 0 0" height="2" width="2"></a-image>
+                    <a-text value="Rajaka" position="-0.9 0 -1.1" rotation="-90 0 0" scale="0.6 0.6 0.6" width="3" color="#FFFFFF"></a-text>
+                </a-entity>
+            </a-entity>
         </a-marker>
+
         <a-entity camera></a-entity>
     </a-scene>
+
+    <script>
+        // Get the marker element
+        const marker = document.querySelector('#hiro-marker');
+
+        // Array of member entities
+        const members = document.querySelectorAll('#member-group > .hidden');
+
+        // Counter for currently displayed member
+        let currentMember = 0;
+
+        // Event listener for when marker is found
+        marker.addEventListener('markerFound', () => {
+            // Show the first member initially
+            showNextMember();
+        });
+
+        // Function to show the next member
+        function showNextMember() {
+            // Hide all members first
+            members.forEach(member => member.classList.add('hidden'));
+
+            // Show the next member
+            if (currentMember < members.length) {
+                members[currentMember].classList.remove('hidden');
+                currentMember++;
+            } else {
+                // Reset counter if all members shown
+                currentMember = 0;
+            }
+        }
+    </script>
 </body>
 </html>
