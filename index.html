@@ -1,52 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AR Members</title>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>IT2040 – MTIT Augmented Reality Assignment - 02</title>
+
+    <!-- include A-Frame obviously -->
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
     <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
-    <style>
-        body {
-            margin: 0;
-            overflow: hidden;
-        }
-    </style>
-</head>
-<body>
+    <!-- include ar.js for A-frame -->
+    <script src="https://jeromeetienne.github.io/AR.js/aframe/build/aframe-ar.js"></script>
+    <link rel="stylesheet" href="app.css" />
+  </head>
+  
+  <body style="margin : 0px; overflow: hidden;">
+
     <a-scene embedded arjs>
-        <a-marker preset="hiro">
-            <a-image src="https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=600" position="-1.5 1 0" height="1" width="1"></a-image>
-            <a-text value="Member 1" position="-1.5 0.2 0" width="3" color="#FFFFFF"></a-text>
 
-            <a-image src="https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=600" position="-0.5 1 0" height="1" width="1"></a-image>
-            <a-text value="Member 2" position="-0.5 0.2 0" width="3" color="#FFFFFF"></a-text>
+  <!-- It19034164-Wehella V.W -->
 
-            <a-image src="https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=600" position="0.5 1 0" height="1" width="1"></a-image>
-            <a-text value="Member 3" position="0.5 0.2 0" width="3" color="#FFFFFF"></a-text>
+  <a-marker type='pattern' url="pattern-nuwa.patt">
+   
+    <a-text color="#000" value="Nuwara Eliya - Wehella V.W" position="-0.9 0 -1.1" rotation="-90 0 0" scale="0.6 0.6 0.6"></a-text>
+    
+    <a-image src="Nuwara Eliya.png"  position="-0.7 0 0" rotation="-90 0 0"  id="ground" height="2" width="2" ></a-image>
+    
+           
 
-            <a-image src="member4.jpg" position="1.5 1 0" height="1" width="1"></a-image>
-            <a-text value="Member 4" position="1.5 0.2 0" width="3" color="#FFFFFF"></a-text>
+          </a-marker>
 
-            <a-image src="member5.jpg" position="-1.5 -0.5 0" height="1" width="1"></a-image>
-            <a-text value="Member 5" position="-1.5 -1.3 0" width="3" color="#FFFFFF"></a-text>
+          <a-entity camera></a-entity>
 
-            <a-image src="member6.jpg" position="-0.5 -0.5 0" height="1" width="1"></a-image>
-            <a-text value="Member 6" position="-0.5 -1.3 0" width="3" color="#FFFFFF"></a-text>
-
-            <a-image src="member7.jpg" position="0.5 -0.5 0" height="1" width="1"></a-image>
-            <a-text value="Member 7" position="0.5 -1.3 0" width="3" color="#FFFFFF"></a-text>
-
-            <a-image src="member8.jpg" position="1.5 -0.5 0" height="1" width="1"></a-image>
-            <a-text value="Member 8" position="1.5 -1.3 0" width="3" color="#FFFFFF"></a-text>
-
-            <a-image src="member9.jpg" position="-0.5 -2 0" height="1" width="1"></a-image>
-            <a-text value="Member 9" position="-0.5 -2.8 0" width="3" color="#FFFFFF"></a-text>
-
-            <a-image src="member10.jpg" position="0.5 -2 0" height="1" width="1"></a-image>
-            <a-text value="Member 10" position="0.5 -2.8 0" width="3" color="#FFFFFF"></a-text>
-        </a-marker>
-        <a-entity camera></a-entity>
-    </a-scene>
-</body>
+ </a-scene>
+  </body>
 </html>
